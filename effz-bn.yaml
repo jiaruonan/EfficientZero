@@ -24,15 +24,18 @@
          resources:
            requests:
              nvidia.com/gpu: 4
-             cpu: 6
+             cpu: 96
              memory: "200Gi"
            limits:
              nvidia.com/gpu: 4
-             cpu: 6
+             cpu: 96
              memory: "200Gi"
          command: ["/bin/bash", "-c",]
          args:
          - |
+           cd /mnt/nfs/jiaruonan/code/efficientzero/core/ctree
+           bash make.sh
+           
            cd /mnt/nfs/jiaruonan/code/efficientzero
            bash train.sh
           #  python3 -u main.py --env BreakoutNoFrameskip-v4 --case atari --opr train --amp_type torch_amp --num_gpus 1 --num_cpus 10 --cpu_actor 1 --gpu_actor 1 --force
