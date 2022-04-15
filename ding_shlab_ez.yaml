@@ -38,6 +38,9 @@
            # cd /mnt/nfs/jiaruonan/DI-engine
            # python3 -u /mnt/nfs/jiaruonan/DI-engine/dizoo/classic_control/cartpole/entry/cartpole_dqn_main.py
            
+           cd /mnt/nfs/jiaruonan/code/efficientzero/core/ctree
+           bash make.sh
+
            cd /mnt/nfs/jiaruonan/code/efficientzero
            conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
            pip install -r requirements.txt
