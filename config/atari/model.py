@@ -69,11 +69,11 @@ class ResidualBlock(nn.Module):
         identity = x
 
         out = self.conv1(x)
-        # out = self.bn1(out)
+        out = self.bn1(out)
         out = nn.functional.relu(out)
 
         out = self.conv2(out)
-        # out = self.bn2(out)
+        out = self.bn2(out)
 
         if self.downsample is not None:
             identity = self.downsample(x)
@@ -176,7 +176,7 @@ class RepresentationNetwork(nn.Module):
             x = self.downsample_net(x)
         else:
             x = self.conv(x)
-            # x = self.bn(x)
+            x = self.bn(x)
             x = nn.functional.relu(x)
 
         for block in self.resblocks:
@@ -247,7 +247,7 @@ class DynamicsNetwork(nn.Module):
     def forward(self, x, reward_hidden):
         state = x[:,:-1,:,:]
         x = self.conv(x)
-        # x = self.bn(x)
+        x = self.bn(x)
 
         x += state
         x = nn.functional.relu(x)
@@ -257,13 +257,13 @@ class DynamicsNetwork(nn.Module):
         state = x
 
         x = self.conv1x1_reward(x)
-        # x = self.bn_reward(x)
+        x = self.bn_reward(x)
         x = nn.functional.relu(x)
 
         x = x.view(-1, self.block_output_size_reward).unsqueeze(0)
         value_prefix, reward_hidden = self.lstm(x, reward_hidden)
         value_prefix = value_prefix.squeeze(0)
-        # value_prefix = self.bn_value_prefix(value_prefix)
+        value_prefix = self.bn_value_prefix(value_prefix)
         value_prefix = nn.functional.relu(value_prefix)
         value_prefix = self.fc(value_prefix)
 
@@ -349,11 +349,11 @@ class PredictionNetwork(nn.Module):
         for block in self.resblocks:
             x = block(x)
         value = self.conv1x1_value(x)
-        # value = self.bn_value(value)
+        value = self.bn_value(value)
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
-        # policy = self.bn_policy(policy)
+        policy = self.bn_policy(policy)
         policy = nn.functional.relu(policy)
 
         value = value.view(-1, self.block_output_size_value)
@@ -519,17 +519,17 @@ class EfficientZeroNet(BaseNet):
         self.porjection_in_dim = in_dim
         self.projection = nn.Sequential(
             nn.Linear(self.porjection_in_dim, self.proj_hid),
-            # nn.BatchNorm1d(self.proj_hid),
+            nn.BatchNorm1d(self.proj_hid),
             nn.ReLU(),
             nn.Linear(self.proj_hid, self.proj_hid),
-            # nn.BatchNorm1d(self.proj_hid),
+            nn.BatchNorm1d(self.proj_hid),
             nn.ReLU(),
             nn.Linear(self.proj_hid, self.proj_out),
-            # nn.BatchNorm1d(self.proj_out)
+            nn.BatchNorm1d(self.proj_out)
         )
         self.projection_head = nn.Sequential(
             nn.Linear(self.proj_out, self.pred_hid),
-            # nn.BatchNorm1d(self.pred_hid),
+            nn.BatchNorm1d(self.pred_hid),
             nn.ReLU(),
             nn.Linear(self.pred_hid, self.pred_out),
         )
