@@ -94,10 +94,10 @@ class BaseNet(nn.Module):
                              torch.zeros(1, num, self.lstm_hidden_size).detach().cpu().numpy())
         else:
             # zero initialization for reward (value prefix) hidden states
-            print('===='*15)
-            print(torch.cuda.is_available())
-            print(torch.cuda.device_count())
-            print('===='*15)
+            # print('===='*15)
+            # print(torch.cuda.is_available())
+            # print(torch.cuda.device_count())
+            # print('===='*15)
             reward_hidden = (torch.zeros(1, num, self.lstm_hidden_size).to('cuda'), torch.zeros(1, num, self.lstm_hidden_size).to('cuda'))
 
         return NetworkOutput(value, [0. for _ in range(num)], actor_logit, state, reward_hidden)
