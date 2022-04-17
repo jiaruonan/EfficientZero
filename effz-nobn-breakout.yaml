@@ -1,7 +1,7 @@
  apiVersion: diengine.opendilab.org/v2alpha1
  kind: DIJob
  metadata:
-   name: ez-nobn-breakout-test
+   name: ez-nobn-breakout-test-bn
  spec:
    group: "base"  # 标记job所属的group
    priority: "normal"  # 表示job的优先级，保留字段，调度中或许可以用到
