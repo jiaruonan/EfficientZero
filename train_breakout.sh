@@ -7,5 +7,5 @@ python main.py --env BreakoutNoFrameskip-v4 --case atari --opr train --force \
   --seed 1 \
   --use_priority \
   --use_max_priority \
-  --amp_type 'torch_amp' \
+  --amp_type 'none' \
   --info 'EfficientZero-V1'
