@@ -176,7 +176,7 @@ class RepresentationNetwork(nn.Module):
             x = self.downsample_net(x)
         else:
             x = self.conv(x)
-            x = self.bn(x)
+            # x = self.bn(x)
             x = nn.functional.relu(x)
 
         for block in self.resblocks:
@@ -247,7 +247,7 @@ class DynamicsNetwork(nn.Module):
     def forward(self, x, reward_hidden):
         state = x[:,:-1,:,:]
         x = self.conv(x)
-        x = self.bn(x)
+        # x = self.bn(x)
 
         x += state
         x = nn.functional.relu(x)
@@ -257,7 +257,7 @@ class DynamicsNetwork(nn.Module):
         state = x
 
         x = self.conv1x1_reward(x)
-        x = self.bn_reward(x)
+        # x = self.bn_reward(x)
         x = nn.functional.relu(x)
 
         x = x.view(-1, self.block_output_size_reward).unsqueeze(0)
