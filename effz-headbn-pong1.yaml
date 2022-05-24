@@ -9,9 +9,9 @@
    preemptible: false  # 表示job是否允许被抢占，调度中对job资源改动之后涉及到抢占操作
    minReplicas: 1
    maxReplicas: 1
-   engineFields:
-     topology: "star"  # 表示workers之间的拓扑连接
-     parallelWorkers: 1  # 表示每个worker中启动的parallel workers数目
+  #  engineFields:
+  #    topology: "star"  # 表示workers之间的拓扑连接
+  #    parallelWorkers: 1  # 表示每个worker中启动的parallel workers数目
    template:
      spec:
        containers:
