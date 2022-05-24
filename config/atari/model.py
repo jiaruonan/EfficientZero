@@ -257,13 +257,13 @@ class DynamicsNetwork(nn.Module):
         state = x
 
         x = self.conv1x1_reward(x)
-        # x = self.bn_reward(x)  # test1
+        x = self.bn_reward(x)  # open reward head
         x = nn.functional.relu(x)
 
         x = x.view(-1, self.block_output_size_reward).unsqueeze(0)
         value_prefix, reward_hidden = self.lstm(x, reward_hidden)
         value_prefix = value_prefix.squeeze(0)
-        # value_prefix = self.bn_value_prefix(value_prefix)
+        value_prefix = self.bn_value_prefix(value_prefix)  # open value_prefix head
         value_prefix = nn.functional.relu(value_prefix)
         value_prefix = self.fc(value_prefix)
 
@@ -349,11 +349,11 @@ class PredictionNetwork(nn.Module):
         for block in self.resblocks:
             x = block(x)
         value = self.conv1x1_value(x)
-        # value = self.bn_value(value)
+        value = self.bn_value(value)  # open value head bn
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
-        # policy = self.bn_policy(policy)  # test2
+        policy = self.bn_policy(policy)  # open policy head bn
         policy = nn.functional.relu(policy)
 
         value = value.view(-1, self.block_output_size_value)
@@ -529,7 +529,7 @@ class EfficientZeroNet(BaseNet):
         )
         self.projection_head = nn.Sequential(
             nn.Linear(self.proj_out, self.pred_hid),
-            # nn.BatchNorm1d(self.pred_hid),  # test 3
+            nn.BatchNorm1d(self.pred_hid),  # open projection bn head
             nn.ReLU(),
             nn.Linear(self.pred_hid, self.pred_out),
         )
