@@ -69,11 +69,11 @@ class ResidualBlock(nn.Module):
         identity = x
 
         out = self.conv1(x)
-        # out = self.bn1(out)
+        out = self.bn1(out)
         out = nn.functional.relu(out)
 
         out = self.conv2(out)
-        # out = self.bn2(out)
+        out = self.bn2(out)
 
         if self.downsample is not None:
             identity = self.downsample(x)
@@ -119,7 +119,7 @@ class DownSample(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
-        # x = self.bn1(x)
+        x = self.bn1(x)
         x = nn.functional.relu(x)
         for block in self.resblocks1:
             x = block(x)
@@ -176,7 +176,7 @@ class RepresentationNetwork(nn.Module):
             x = self.downsample_net(x)
         else:
             x = self.conv(x)
-            # x = self.bn(x)
+            x = self.bn(x)
             x = nn.functional.relu(x)
 
         for block in self.resblocks:
@@ -247,7 +247,7 @@ class DynamicsNetwork(nn.Module):
     def forward(self, x, reward_hidden):
         state = x[:,:-1,:,:]
         x = self.conv(x)
-        # x = self.bn(x)
+        x = self.bn(x)
 
         x += state
         x = nn.functional.relu(x)
@@ -339,7 +339,9 @@ class PredictionNetwork(nn.Module):
         self.conv1x1_value = nn.Conv2d(num_channels, reduced_channels_value, 1)
         self.conv1x1_policy = nn.Conv2d(num_channels, reduced_channels_policy, 1)
         self.bn_value = nn.BatchNorm2d(reduced_channels_value, momentum=momentum)
+        # self.ln_value = nn.LayerNorm([reduced_channels_value,])
         self.bn_policy = nn.BatchNorm2d(reduced_channels_policy, momentum=momentum)
+        # self.ln_policy = nn.LayerNorm([reduced_channels_policy,])
         self.block_output_size_value = block_output_size_value
         self.block_output_size_policy = block_output_size_policy
         self.fc_value = mlp(self.block_output_size_value, fc_value_layers, full_support_size, init_zero=init_zero, momentum=momentum)
@@ -348,11 +350,17 @@ class PredictionNetwork(nn.Module):
     def forward(self, x):
         for block in self.resblocks:
             x = block(x)
+        print("===="*20)
+        print("x:", x.shape)
+        print("self.conv1x1_value:", self.conv1x1_value)
         value = self.conv1x1_value(x)
+        print("value.shape:", value.shape)
+        print("===="*20)
         value = self.bn_value(value)  # open value head bn
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
+        print("policy.shape:", policy.shape)
         policy = self.bn_policy(policy)  # open policy head bn
         policy = nn.functional.relu(policy)
 
