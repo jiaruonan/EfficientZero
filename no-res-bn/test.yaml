@@ -22,13 +22,13 @@ spec:
                - key: kubernetes.io/hostname
                  operator: In
                  values:
-                 - host-10-142-40-19
-                 - host-10-142-40-54
-                 - host-10-142-40-55
-                 - host-10-142-40-56
-                 - host-10-142-40-57
-                 - host-10-142-40-58
-                 - host-10-142-40-59 
+                #  - host-10-142-40-19
+                #  - host-10-142-40-54
+                #  - host-10-142-40-55
+                #  - host-10-142-40-56
+                #  - host-10-142-40-57
+                #  - host-10-142-40-58
+                #  - host-10-142-40-59 
                  - sh-idc1-10-142-40-61
                  - sh-idc1-10-142-40-62
       containers:
