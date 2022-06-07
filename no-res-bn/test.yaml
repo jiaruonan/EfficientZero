@@ -56,7 +56,7 @@ spec:
           bash train_breakout.sh
         volumeMounts:
         - name: work-dir
-          mountPath: /mnt/nfs/yangzhenjie
+          mountPath: /mnt/nfs/jiaruonan
       volumes:
       - name: cache-volume
         emptyDir:
@@ -64,4 +64,4 @@ spec:
           sizeLimit: 128Mi
       - name: work-dir
         hostPath:
-          path: /mnt/nfs/yangzhenjie
+          path: /mnt/nfs/jiaruonan
