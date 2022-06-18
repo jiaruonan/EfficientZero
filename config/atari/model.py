@@ -119,7 +119,7 @@ class DownSample(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
-        x = self.bn1(x)
+        # x = self.bn1(x)
         x = nn.functional.relu(x)
         for block in self.resblocks1:
             x = block(x)
@@ -176,7 +176,7 @@ class RepresentationNetwork(nn.Module):
             x = self.downsample_net(x)
         else:
             x = self.conv(x)
-            x = self.bn(x)
+            # x = self.bn(x)
             x = nn.functional.relu(x)
 
         for block in self.resblocks:
@@ -247,7 +247,7 @@ class DynamicsNetwork(nn.Module):
     def forward(self, x, reward_hidden):
         state = x[:,:-1,:,:]
         x = self.conv(x)
-        x = self.bn(x)
+        # x = self.bn(x)
 
         x += state
         x = nn.functional.relu(x)
@@ -356,13 +356,13 @@ class PredictionNetwork(nn.Module):
         value = self.conv1x1_value(x)
         # print("value.shape:", value.shape)
         # print("===="*20)
-        value = self.bn_value(value)  # open value head bn
+        # value = self.bn_value(value)  # open value head bn
         # value = self.ln_value(value)  # open value head ln
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
         # print("policy.shape:", policy.shape)
-        policy = self.bn_policy(policy)  # open policy head bn
+        # policy = self.bn_policy(policy)  # open policy head bn
         # policy = self.ln_policy(policy)  # open policy head ln
         policy = nn.functional.relu(policy)
 
@@ -529,17 +529,17 @@ class EfficientZeroNet(BaseNet):
         self.porjection_in_dim = in_dim
         self.projection = nn.Sequential(
             nn.Linear(self.porjection_in_dim, self.proj_hid),
-            nn.BatchNorm1d(self.proj_hid),
+            # nn.BatchNorm1d(self.proj_hid),
             nn.ReLU(),
             nn.Linear(self.proj_hid, self.proj_hid),
-            nn.BatchNorm1d(self.proj_hid),
+            # nn.BatchNorm1d(self.proj_hid),
             nn.ReLU(),
             nn.Linear(self.proj_hid, self.proj_out),
-            nn.BatchNorm1d(self.proj_out)
+            # nn.BatchNorm1d(self.proj_out)
         )
         self.projection_head = nn.Sequential(
             nn.Linear(self.proj_out, self.pred_hid),
-            nn.BatchNorm1d(self.pred_hid),  # open projection bn head
+            # nn.BatchNorm1d(self.pred_hid),  # open projection bn head
             nn.ReLU(),
             nn.Linear(self.pred_hid, self.pred_out),
         )
