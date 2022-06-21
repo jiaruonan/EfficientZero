@@ -257,13 +257,13 @@ class DynamicsNetwork(nn.Module):
         state = x
 
         x = self.conv1x1_reward(x)
-        x = self.bn_reward(x)  # open reward head
+        # x = self.bn_reward(x)  # open reward head
         x = nn.functional.relu(x)
 
         x = x.view(-1, self.block_output_size_reward).unsqueeze(0)
         value_prefix, reward_hidden = self.lstm(x, reward_hidden)
         value_prefix = value_prefix.squeeze(0)
-        value_prefix = self.bn_value_prefix(value_prefix)  # open value_prefix head
+        # value_prefix = self.bn_value_prefix(value_prefix)  # open value_prefix head
         value_prefix = nn.functional.relu(value_prefix)
         value_prefix = self.fc(value_prefix)
 
@@ -356,13 +356,13 @@ class PredictionNetwork(nn.Module):
         value = self.conv1x1_value(x)
         # print("value.shape:", value.shape)
         # print("===="*20)
-        # value = self.bn_value(value)  # open value head bn
+        value = self.bn_value(value)  # open value head bn
         # value = self.ln_value(value)  # open value head ln
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
         # print("policy.shape:", policy.shape)
-        # policy = self.bn_policy(policy)  # open policy head bn
+        policy = self.bn_policy(policy)  # open policy head bn
         # policy = self.ln_policy(policy)  # open policy head ln
         policy = nn.functional.relu(policy)
 
