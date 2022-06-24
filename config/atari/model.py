@@ -338,10 +338,10 @@ class PredictionNetwork(nn.Module):
 
         self.conv1x1_value = nn.Conv2d(num_channels, reduced_channels_value, 1)
         self.conv1x1_policy = nn.Conv2d(num_channels, reduced_channels_policy, 1)
-        self.bn_value = nn.BatchNorm2d(reduced_channels_value, momentum=momentum)
-        # self.ln_value = nn.LayerNorm([reduced_channels_value, 6, 6])  # TODO
-        self.bn_policy = nn.BatchNorm2d(reduced_channels_policy, momentum=momentum)
-        # self.ln_policy = nn.LayerNorm([reduced_channels_policy, 6, 6])  # TODO
+        # self.bn_value = nn.BatchNorm2d(reduced_channels_value, momentum=momentum)
+        self.ln_value = nn.LayerNorm([reduced_channels_value, 6, 6])  # TODO
+        # self.bn_policy = nn.BatchNorm2d(reduced_channels_policy, momentum=momentum)
+        self.ln_policy = nn.LayerNorm([reduced_channels_policy, 6, 6])  # TODO
         self.block_output_size_value = block_output_size_value
         self.block_output_size_policy = block_output_size_policy
         self.fc_value = mlp(self.block_output_size_value, fc_value_layers, full_support_size, init_zero=init_zero, momentum=momentum)
@@ -356,14 +356,14 @@ class PredictionNetwork(nn.Module):
         value = self.conv1x1_value(x)
         # print("value.shape:", value.shape)
         # print("===="*20)
-        value = self.bn_value(value)  # open value head bn
-        # value = self.ln_value(value)  # open value head ln
+        # value = self.bn_value(value)  # open value head bn
+        value = self.ln_value(value)  # open value head ln
         value = nn.functional.relu(value)
 
         policy = self.conv1x1_policy(x)
         # print("policy.shape:", policy.shape)
-        policy = self.bn_policy(policy)  # open policy head bn
-        # policy = self.ln_policy(policy)  # open policy head ln
+        # policy = self.bn_policy(policy)  # open policy head bn
+        policy = self.ln_policy(policy)  # open policy head ln
         policy = nn.functional.relu(policy)
 
         value = value.view(-1, self.block_output_size_value)
